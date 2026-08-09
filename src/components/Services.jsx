@@ -15,7 +15,7 @@ const Services = () => {
                     <div className="col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.1s">
                         <div className="service-item rounded">
                             <div className="service-img rounded-top">
-                                <img src="/img/service-1.jpg" className="img-fluid rounded-top w-100" alt="Forex trading" />
+                                <img src="/img/forex.jpg" className="img-fluid rounded-top w-100" alt="Forex trading" />
                             </div>
                             <div className="service-content rounded-bottom bg-light p-4">
                                 <div className="service-content-inner">
@@ -29,7 +29,7 @@ const Services = () => {
                     <div className="col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.3s">
                         <div className="service-item rounded">
                             <div className="service-img rounded-top">
-                                <img src="/img/service-2.jpg" className="img-fluid rounded-top w-100" alt="Agriculture finance" />
+                                <img src="/img/agric.jpg" className="img-fluid rounded-top w-100" alt="Agriculture finance" />
                             </div>
                             <div className="service-content rounded-bottom bg-light p-4">
                                 <div className="service-content-inner">
@@ -43,7 +43,7 @@ const Services = () => {
                     <div className="col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.5s">
                         <div className="service-item rounded">
                             <div className="service-img rounded-top">
-                                <img src="/img/service-3.jpg" className="img-fluid rounded-top w-100" alt="Oil and gas finance" />
+                                <img src="/img/oil.jpg" className="img-fluid rounded-top w-100" alt="Oil and gas finance" />
                             </div>
                             <div className="service-content rounded-bottom bg-light p-4">
                                 <div className="service-content-inner">
@@ -57,7 +57,7 @@ const Services = () => {
                     <div className="col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.7s">
                         <div className="service-item rounded">
                             <div className="service-img rounded-top">
-                                <img src="/img/service-4.jpg" className="img-fluid rounded-top w-100" alt="Real estate finance" />
+                                <img src="/img/estate.jpg" className="img-fluid rounded-top w-100" alt="Real estate finance" />
                             </div>
                             <div className="service-content rounded-bottom bg-light p-4">
                                 <div className="service-content-inner">
@@ -71,7 +71,7 @@ const Services = () => {
                     <div className="col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.9s">
                         <div className="service-item rounded">
                             <div className="service-img rounded-top">
-                                <img src="/img/service-1.jpg" className="img-fluid rounded-top w-100" alt="Retirement planning" />
+                                <img src="/img/retire.jpg" className="img-fluid rounded-top w-100" alt="Retirement planning" />
                             </div>
                             <div className="service-content rounded-bottom bg-light p-4">
                                 <div className="service-content-inner">
@@ -85,7 +85,7 @@ const Services = () => {
                     <div className="col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="1.1s">
                         <div className="service-item rounded">
                             <div className="service-img rounded-top">
-                                <img src="/img/service-2.jpg" className="img-fluid rounded-top w-100" alt="Gold investment" />
+                                <img src="/img/gold.jpg" className="img-fluid rounded-top w-100" alt="Gold investment" />
                             </div>
                             <div className="service-content rounded-bottom bg-light p-4">
                                 <div className="service-content-inner">

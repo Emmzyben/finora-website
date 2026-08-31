@@ -16,6 +16,7 @@ const Footer = () => {
                                     <a className="btn-square btn btn-primary text-white rounded-circle mx-1" href=""><i className="fab fa-instagram"></i></a>
                                     <a className="btn-square btn btn-primary text-white rounded-circle mx-1" href=""><i className="fab fa-linkedin-in"></i></a>
                                 </div>
+
                             </div>
                         </div>
                         <div className="col-md-6 col-lg-6 col-xl-3">

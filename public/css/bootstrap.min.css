@@ -3138,7 +3138,7 @@ fieldset:disabled .btn {
 }
 
 .btn-primary {
-    color: #000;
+    color: #ffffff;
     background-color: #15b9d9;
     border-color: #15b9d9
 }
@@ -8392,7 +8392,7 @@ fieldset:disabled .btn {
 }
 
 .text-white-50 {
-    color: rgba(255, 255, 255, .5) !important
+    color: #fff !important
 }
 
 .text-reset {

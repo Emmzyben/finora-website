@@ -1,7 +1,14 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { apiRequest, clearAuth, setAuthToken, setCurrentUser } from '../lib/api';
+import EmailVerification from '../components/EmailVerification';
 
 const SignUpPage = () => {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        clearAuth();
+    }, []);
     const [step, setStep] = useState(1);
     const [formData, setFormData] = useState({
         firstName: '',
@@ -17,13 +24,60 @@ const SignUpPage = () => {
         confirmPassword: '',
         agreeTerms: false
     });
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [verificationUser, setVerificationUser] = useState(null);
 
     const handleChange = (e) => {
         const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+
+        if (e.target.name === 'email') {
+            setFormData({ ...formData, email: value.trim().toLowerCase() });
+            return;
+        }
+
+        if (e.target.name === 'phone') {
+            const cleaned = value.replace(/[^\d+]/g, '').slice(0, 15);
+            setFormData({ ...formData, phone: cleaned });
+            return;
+        }
+
         setFormData({ ...formData, [e.target.name]: value });
     };
 
     const nextStep = () => {
+        setError('');
+        
+        if (step === 1) {
+            if (!formData.firstName.trim() || !formData.lastName.trim() || !formData.username.trim()) {
+                setError('Please fill in all required fields (First Name, Last Name, Username).');
+                return;
+            }
+        }
+        
+        if (step === 2) {
+            if (!formData.email.trim() || !formData.phone.trim() || !formData.country.trim()) {
+                setError('Please fill in all required fields (Email, Phone, Country).');
+                return;
+            }
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+                setError('Please enter a valid email address.');
+                return;
+            }
+            const phone = formData.phone.replace(/\s+/g, '').trim();
+            if (!/^\+?[0-9]{10,15}$/.test(phone)) {
+                setError('Phone number must contain 10 to 15 digits and may include a leading +.');
+                return;
+            }
+        }
+        
+        if (step === 3) {
+            if (!formData.accountType) {
+                setError('Please select an account type.');
+                return;
+            }
+        }
+
         setStep(step + 1);
     };
 
@@ -31,10 +85,58 @@ const SignUpPage = () => {
         setStep(step - 1);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Sign Up Data:', formData);
-        // Handle form submission
+        setError('');
+
+        if (formData.password !== formData.confirmPassword) {
+            setError('Passwords do not match.');
+            return;
+        }
+
+        if (!/^\d{4}$/.test(formData.pin)) {
+            setError('Transaction PIN must be exactly 4 numeric digits.');
+            return;
+        }
+
+        setLoading(true);
+
+        try {
+            const phone = formData.phone.replace(/\s+/g, '').trim();
+            if (!/^\+?[0-9]{10,15}$/.test(phone)) {
+                setError('Phone number must contain 10 to 15 digits and may include a leading +.');
+                setLoading(false);
+                return;
+            }
+
+            const result = await apiRequest('signup', {
+                method: 'POST',
+                body: {
+                    username: formData.username,
+                    email: formData.email.trim().toLowerCase(),
+                    password: formData.password,
+                    first_name: formData.firstName,
+                    middle_name: formData.middleName,
+                    last_name: formData.lastName,
+                    phone,
+                    country: formData.country,
+                    account_type: formData.accountType,
+                    transaction_pin: formData.pin,
+                },
+            });
+
+            setAuthToken(result.token);
+            setCurrentUser(result.user);
+            if (result.email_verification_required && !result.user.email_verified) {
+                setVerificationUser(result.user);
+            } else {
+                navigate('/dashboard');
+            }
+        } catch (err) {
+            setError(err.message || 'Registration failed. Please try again.');
+        } finally {
+            setLoading(false);
+        }
     };
 
     const renderStep = () => {
@@ -84,11 +186,9 @@ const SignUpPage = () => {
                                 <label className="text-white mb-2">Country *</label>
                                 <input type="text" name="country" className="form-control py-3 border-primary bg-transparent text-white" placeholder="Your Country" value={formData.country} onChange={handleChange} required />
                             </div>
-                            <div className="col-6 mt-4">
-                                <button type="button" onClick={prevStep} className="btn btn-outline-primary text-white w-100 py-3 px-5">Previous</button>
-                            </div>
-                            <div className="col-6 mt-4">
-                                <button type="button" onClick={nextStep} className="btn btn-primary text-white w-100 py-3 px-5">Next</button>
+                            <div className="col-12 mt-4 d-flex gap-3">
+                                <button type="button" onClick={prevStep} className="btn btn-outline-primary text-white flex-grow-1 py-3">Previous</button>
+                                <button type="button" onClick={nextStep} className="btn btn-primary text-white flex-grow-1 py-3">Next</button>
                             </div>
                         </div>
                     </>
@@ -112,11 +212,9 @@ const SignUpPage = () => {
                                     <option value="Investment" className="text-dark">Investment Account - For stocks and securities</option>
                                 </select>
                             </div>
-                            <div className="col-6 mt-4">
-                                <button type="button" onClick={prevStep} className="btn btn-outline-primary text-white w-100 py-3 px-5">Previous</button>
-                            </div>
-                            <div className="col-6 mt-4">
-                                <button type="button" onClick={nextStep} className="btn btn-primary text-white w-100 py-3 px-5">Next</button>
+                            <div className="col-12 mt-4 d-flex gap-3">
+                                <button type="button" onClick={prevStep} className="btn btn-outline-primary text-white flex-grow-1 py-3">Previous</button>
+                                <button type="button" onClick={nextStep} className="btn btn-primary text-white flex-grow-1 py-3">Next</button>
                             </div>
                         </div>
                     </>
@@ -129,7 +227,10 @@ const SignUpPage = () => {
                         <div className="row gy-3 gx-4">
                             <div className="col-12">
                                 <label className="text-white mb-2">Transaction PIN (4 digits) *</label>
-                                <input type="password" name="pin" maxLength="4" className="form-control py-3 border-primary bg-transparent text-white" placeholder="••••" value={formData.pin} onChange={handleChange} required />
+                                <input type="password" name="pin" maxLength="4" inputMode="numeric" pattern="\d{4}" className="form-control py-3 border-primary bg-transparent text-white" placeholder="••••" value={formData.pin} onChange={(e) => {
+                                    const numericValue = e.target.value.replace(/\D/g, '').slice(0, 4);
+                                    setFormData({ ...formData, pin: numericValue });
+                                }} required />
                             </div>
                             <div className="col-xl-6">
                                 <label className="text-white mb-2">Password *</label>
@@ -147,11 +248,11 @@ const SignUpPage = () => {
                                     </label>
                                 </div>
                             </div>
-                            <div className="col-6 mt-4">
-                                <button type="button" onClick={prevStep} className="btn btn-outline-primary text-white w-100 py-3 px-5">Previous</button>
-                            </div>
-                            <div className="col-6 mt-4">
-                                <button type="submit" className="btn btn-primary text-white w-100 py-3 px-5">Register</button>
+                            <div className="col-12 mt-4 d-flex gap-3">
+                                <button type="button" onClick={prevStep} className="btn btn-outline-primary text-white flex-grow-1 py-3">Previous</button>
+                                <button type="submit" className="btn btn-primary text-white flex-grow-1 py-3" disabled={loading}>
+                                    {loading ? 'REGISTERING...' : 'Register'}
+                                </button>
                             </div>
                         </div>
                     </>
@@ -161,6 +262,15 @@ const SignUpPage = () => {
         }
     };
 
+    if (verificationUser) {
+        return (
+            <EmailVerification
+                email={verificationUser.email}
+                onVerified={() => navigate('/dashboard')}
+            />
+        );
+    }
+
     return (
         <div className="container-fluid appointment py-5">
             <div className="container py-5">
@@ -169,6 +279,9 @@ const SignUpPage = () => {
                         <div className="appointment-form rounded p-5">
                             <p className="fs-4 text-uppercase text-primary text-center">Open an Account</p>
                             <h1 className="display-5 mb-4 text-center text-white">Sign Up</h1>
+                            {error && (
+                                <div className="alert alert-danger mb-3">{error}</div>
+                            )}
                             
                             {/* Step Indicator */}
                             <div className="d-flex justify-content-center mb-5">

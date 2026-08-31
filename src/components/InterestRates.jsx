@@ -4,12 +4,13 @@ const plans = [
     {
         type: 'Personal',
         account: 'Account',
-        rate: '2%',
-        label: 'MONTHLY INTEREST',
+        rate: '5%',
+        label: 'DAILY INTEREST',
         details: [
             { icon: 'fas fa-dollar-sign', label: 'Minimum Amount', value: 'USD 1,000' },
             { icon: 'fas fa-sliders-h', label: 'Interval Type', value: 'Partial' },
-            { icon: 'fas fa-calendar-alt', label: 'Get Interest Every', value: '30 Days' },
+            { icon: 'fas fa-calendar-alt', label: 'Get Interest Every', value: '1 Day' },
+            { icon: 'fas fa-clock', label: 'Duration', value: '1 Month' },
         ],
         featured: false,
         delay: '0.1s',
@@ -20,12 +21,13 @@ const plans = [
     {
         type: 'Corporate',
         account: 'Account',
-        rate: '3%',
-        label: 'MONTHLY INTEREST',
+        rate: '15%',
+        label: 'DAILY INTEREST',
         details: [
             { icon: 'fas fa-dollar-sign', label: 'Minimum Amount', value: 'USD 10,000' },
             { icon: 'fas fa-sliders-h', label: 'Interval Type', value: 'Fixed' },
-            { icon: 'fas fa-calendar-alt', label: 'Get Interest Every', value: '30 Days' },
+            { icon: 'fas fa-calendar-alt', label: 'Get Interest Every', value: '1 Day' },
+            { icon: 'fas fa-clock', label: 'Duration', value: '1 Month' },
         ],
         featured: true,
         delay: '0.3s',

@@ -1,0 +1,186 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* ============================================================
+   BASE LAYOUT
+   ============================================================ */
+.dashboard-layout {
+    display: flex;
+    min-height: 100vh;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+}
+
+/* ── Scoped font-size overrides for all dashboard content ── */
+.dashboard-main-content h1 { font-size: 1.5rem; }
+.dashboard-main-content h2 { font-size: 1.3rem; }
+.dashboard-main-content h3 { font-size: 1.15rem; }
+.dashboard-main-content h4 { font-size: 1.05rem; }
+.dashboard-main-content h5 { font-size: 0.95rem; }
+.dashboard-main-content h6 { font-size: 0.85rem; }
+
+.dashboard-main-content p,
+.dashboard-main-content span,
+.dashboard-main-content li,
+.dashboard-main-content td,
+.dashboard-main-content th { font-size: 0.82rem; }
+
+.dashboard-main-content .form-label,
+.dashboard-main-content label { font-size: 0.78rem; }
+
+.dashboard-main-content .form-control,
+.dashboard-main-content .form-select,
+.dashboard-main-content .input-group-text { font-size: 0.82rem; }
+
+.dashboard-main-content .btn { font-size: 0.82rem; }
+
+.dashboard-main-content .small,
+.dashboard-main-content small { font-size: 0.75rem; }
+
+.dashboard-main-content .fs-4 { font-size: 1.1rem !important; }
+.dashboard-main-content .fs-5 { font-size: 0.95rem !important; }
+.dashboard-main-content .fs-6 { font-size: 0.82rem !important; }
+
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
+.dashboard-sidebar {
+    width: 260px;
+    flex-shrink: 0;
+    background-color: #fff;
+    border-right: 1px solid #e5e4e7;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    z-index: 1100;
+    transition: transform 0.3s ease;
+}
+
+.dashboard-sidebar .nav-link {
+    color: #6b6375;
+    font-weight: 500;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+    margin: 4px 16px;
+    transition: all 0.3s;
+}
+
+.dashboard-sidebar .nav-link:hover,
+.dashboard-sidebar .nav-link.active {
+    background-color: #f4f6fc;
+    color: #0d6efd;
+}
+
+.dashboard-sidebar .nav-link i,
+.dashboard-sidebar .nav-link svg {
+    margin-right: 12px;
+    font-size: 1.1rem;
+}
+
+.dashboard-sidebar-header {
+    padding: 24px 20px 10px;
+}
+
+.sidebar-category {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #9ca3af;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 20px 0 8px 20px;
+}
+
+/* Scrollbar styling */
+.dashboard-sidebar::-webkit-scrollbar { width: 6px; }
+.dashboard-sidebar::-webkit-scrollbar-track { background: transparent; }
+.dashboard-sidebar::-webkit-scrollbar-thumb { background: #e5e4e7; border-radius: 4px; }
+.dashboard-sidebar::-webkit-scrollbar-thumb:hover { background: #d1d0d4; }
+
+/* ============================================================
+   MAIN CONTENT
+   ============================================================ */
+.dashboard-main-content {
+    background-color: #f8f9fa;
+}
+
+/* ============================================================
+   PROFILE CARD
+   ============================================================ */
+.profile-card {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 16px;
+    margin: 0 16px 16px;
+    border: 1px solid #e5e4e7;
+}
+
+.profile-card .avatar {
+    width: 40px;
+    height: 40px;
+    background-color: #0d6efd;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+/* ============================================================
+   OVERLAY (mobile backdrop)
+   ============================================================ */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 1099;
+}
+
+/* ============================================================
+   MOBILE RESPONSIVE  ( < 992px = Bootstrap "lg" breakpoint )
+   ============================================================ */
+@media (max-width: 991.98px) {
+
+    /* Sidebar becomes a fixed off-canvas drawer */
+    .dashboard-sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        transform: translateX(-100%);
+        box-shadow: 4px 0 24px rgba(0, 0, 0, 0.12);
+    }
+
+    /* When open, slide in */
+    .dashboard-sidebar.sidebar-mobile-open {
+        transform: translateX(0);
+    }
+
+    /* Show the backdrop */
+    .sidebar-overlay {
+        display: block;
+    }
+
+    /* Main content fills full width */
+    .dashboard-main-content {
+        width: 100%;
+    }
+}
+
+/* ============================================================
+   SMALL PHONES  ( < 576px )
+   ============================================================ */
+@media (max-width: 575.98px) {
+    .dashboard-layout .container-fluid {
+        padding: 12px !important;
+    }
+
+    /* Make cards stack nicely */
+    .dashboard-content .row > [class*="col-"] {
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+}

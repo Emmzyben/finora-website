@@ -1,0 +1,12 @@
+﻿# Handle CORS at Apache level — fires before PHP, covers all error responses
+<IfModule mod_headers.c>
+    Header always set Access-Control-Allow-Origin "*"
+    Header always set Access-Control-Allow-Methods "GET, POST, PUT, PATCH, DELETE, OPTIONS"
+    Header always set Access-Control-Allow-Headers "Content-Type, Authorization, X-Auth-Token, X-Requested-With"
+    Header always set Content-Type "application/json; charset=utf-8"
+</IfModule>
+
+# Handle OPTIONS preflight at Apache level
+RewriteEngine On
+RewriteCond %{REQUEST_METHOD} OPTIONS
+RewriteRule ^(.*)$ $1 [R=200,L]

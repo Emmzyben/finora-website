@@ -1,12 +1,14 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import CryptoTicker from './CryptoTicker';
 
 const Navbar = () => {
     const location = useLocation();
 
     return (
         <div className="container-fluid position-relative p-0">
-            <nav className="navbar navbar-expand-lg navbar-light bg-white px-4 px-lg-5 py-3 py-lg-0">
+            <CryptoTicker />
+            <nav className="navbar navbar-expand-lg navbar-light bg-white px-4 px-lg-5 py-3 py-lg-0" style={{ top: '46px' }}>
                 <Link to="/" className="navbar-brand p-0">
                     <h1 className="text-primary m-0"><i className="fas fa-piggy-bank me-3"></i>Finora</h1>
                 </Link>

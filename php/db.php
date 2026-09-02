@@ -16,6 +16,11 @@ function getDatabaseConnection(): PDO
         return $pdo;
     } catch (PDOException $e) {
         http_response_code(500);
+        // Ensure CORS headers are sent even on DB failure
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS');
+        header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Auth-Token, X-Requested-With');
+        header('Content-Type: application/json; charset=utf-8');
         echo json_encode([
             'success' => false,
             'message' => 'Database connection failed.',

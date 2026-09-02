@@ -1,8 +1,18 @@
 <?php
+// CORS — guarantee headers on every response from this file
+if (!headers_sent()) {
+    header('Access-Control-Allow-Origin: *');
+    header('Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS');
+    header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Auth-Token, X-Requested-With');
+}
 
 function sendJson(array $payload, int $status = 200): void
 {
     http_response_code($status);
+    // Re-assert CORS on every outgoing response
+    header('Access-Control-Allow-Origin: *');
+    header('Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS');
+    header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Auth-Token, X-Requested-With');
     header('Content-Type: application/json; charset=utf-8');
     echo json_encode($payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
     exit;

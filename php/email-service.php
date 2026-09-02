@@ -1,26 +1,24 @@
 <?php
 
-class EmailService {
-    private $apiEndpoint;
+// Load PHPMailer via the local send_email helper
+require_once __DIR__ . '/send_email.php';
 
-    public function __construct() {
-        $this->apiEndpoint = 'https://connecta.uk/send_email2.php';
-    }
+class EmailService {
 
     public function sendVerificationEmail($toEmail, $toName, $verificationCode) {
-        $subject = 'Verify Your Finora Account';
+        $subject     = 'Verify Your Finora Account';
         $htmlContent = $this->getVerificationEmailTemplate($toName, $verificationCode);
         return $this->send($toEmail, $toName, $subject, $htmlContent);
     }
 
     public function sendPasswordResetEmail($toEmail, $toName, $resetCode) {
-        $subject = 'Reset Your Finora Password';
+        $subject     = 'Reset Your Finora Password';
         $htmlContent = $this->getPasswordResetEmailTemplate($toName, $resetCode);
         return $this->send($toEmail, $toName, $subject, $htmlContent);
     }
 
     public function sendWelcomeEmail($toEmail, $toName) {
-        $subject = 'Welcome to Finora';
+        $subject     = 'Welcome to Finora';
         $htmlContent = $this->getWelcomeEmailTemplate($toName);
         return $this->send($toEmail, $toName, $subject, $htmlContent);
     }
@@ -33,44 +31,15 @@ class EmailService {
             ];
         }
 
-        $payload = [
-            'email' => $toEmail,
-            'subject' => $subject,
-            'message' => $htmlContent,
-        ];
+        $result = sendEmail($toName, $toEmail, $htmlContent, $subject);
 
-        $ch = curl_init($this->apiEndpoint);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            'Content-Type: application/json',
-        ]);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);  // max 5s to connect
-        curl_setopt($ch, CURLOPT_TIMEOUT, 10);         // max 10s total
-
-        $response = curl_exec($ch);
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        $error = curl_error($ch);
-        curl_close($ch);
-
-        if ($error) {
-            error_log("Email send error: $error");
-            return [
-                'success' => false,
-                'message' => 'Failed to send email',
-            ];
-        }
-
-        $decodedResponse = json_decode((string) $response, true);
-        if ($httpCode >= 200 && $httpCode < 300 && (!is_array($decodedResponse) || ($decodedResponse['status'] ?? '') !== 'error')) {
+        if ($result) {
             return [
                 'success' => true,
                 'message' => 'Email sent successfully',
             ];
         }
 
-        error_log("Connecta email API error (HTTP $httpCode): $response");
         return [
             'success' => false,
             'message' => 'Failed to send email',

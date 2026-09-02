@@ -46,6 +46,8 @@ class EmailService {
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Content-Type: application/json',
         ]);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);  // max 5s to connect
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10);         // max 10s total
 
         $response = curl_exec($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);

@@ -18,8 +18,9 @@ export const hasAuthToken = () => Boolean(getAuthToken());
 export const setAuthToken = (token) => {
     try {
         if (token) {
+            // Write to both so the token survives page reloads (sessionStorage is tab-scoped)
             storage().setItem(AUTH_TOKEN_KEY, token);
-            localStorage.removeItem(AUTH_TOKEN_KEY);
+            localStorage.setItem(AUTH_TOKEN_KEY, token);
             return;
         }
 
@@ -100,7 +101,9 @@ export async function apiRequest(action, options = {}) {
     const payload = isJson ? await response.json() : { message: await response.text() };
 
     if (!response.ok) {
-        throw new Error(payload.message || 'Request failed');
+        // Surface a meaningful error — fall back to HTTP status text
+        const msg = payload.message || payload.error || `Request failed (${response.status} ${response.statusText})`;
+        throw new Error(msg);
     }
 
     return payload;
